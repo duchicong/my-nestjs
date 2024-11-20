@@ -1,0 +1,15 @@
+POST http://localhost:3030/posts
+Content-Type: application/json
+
+{
+  "title": "the post",
+  "slug": "the-post-1",
+  "postType": "post",
+  "status": "draft",
+  "content": "this is content of the post",
+  "schema": "{\"b\":1,\"c\":2,\"d\":3}",
+  "featuredImageUrl": "https://goolge.com/images/image1.jpg",
+  "publishOn": "2024-11-20T14:20:12.231Z",
+  "tags": ["post1"],
+  "meteOptions": [{ "key": "testKey", "value": 123 }]
+}

@@ -1,0 +1,2 @@
+# GET http://localhost:3030/users/12/
+GET http://localhost:3030/users/?sex=1&limit=10&offset=20 
