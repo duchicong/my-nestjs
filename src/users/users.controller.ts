@@ -57,8 +57,7 @@ export class UsersController {
 
   @Post()
   public createUser(@Body() createUserDto: CreateUserDto) {
-    console.log('new user: ', createUserDto);
-    return 'You just add an user.';
+    return this.usersService.createUser(createUserDto);
   }
 
   @Patch()

@@ -1,6 +1,9 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { GetUsersParamDto } from '../dtos/get-users-param.dto';
-import { AuthService } from 'src/auth/providers/auth.service';
+import { Repository } from 'typeorm';
+import { User } from '../user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { CreateUserDto } from '../dtos/create-user.dto';
 
 /**
  * Class to connect to Users table and perform business operations
@@ -11,8 +14,9 @@ export class UsersService {
    * The method to get all the users from the database
    */
   constructor(
-    @Inject(forwardRef(() => AuthService))
-    private readonly authService: AuthService,
+    // Injecting usersRepository
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
   ) {}
 
   /**
@@ -24,7 +28,8 @@ export class UsersService {
     page: number,
   ) {
     console.log('args ', { getUserParamDto, limit, page });
-    const isAuth = this.authService.isAuth();
+    // const isAuth = this.authService.isAuth();
+    const isAuth = true;
     console.log('isauth ', isAuth);
     return [
       {
@@ -44,5 +49,23 @@ export class UsersService {
       firstName: 'cong',
       email: 'ducong@gmail.com',
     };
+  }
+
+  public async createUser(createUserDto: CreateUserDto) {
+    try {
+      // check user is exists with smae email
+      const exsitingUser = await this.usersRepository.findOne({
+        where: { email: createUserDto.email },
+      });
+
+      if (exsitingUser) throw new Error('User is existed');
+
+      let newUser = this.usersRepository.create(createUserDto);
+      newUser = await this.usersRepository.save(newUser);
+
+      return newUser;
+    } catch (err) {
+      return err;
+    }
   }
 }
