@@ -1,6 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { CreatePostMetaOptionsDto } from './dtos/create-post-meta-options-dto';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { EnumPostStatus, EnumPostType } from './enums';
+import { MetaOption } from 'src/meta-options/meta-option.entity';
 
 @Entity()
 export class Post {
@@ -60,7 +66,13 @@ export class Post {
   publishOn?: Date;
 
   // Work on these in lectures on relationships
-  tags?: string[];
+  @OneToOne(() => MetaOption, (metaOption) => metaOption.post, {
+    // principle: alway delete parent then data child will degrate
+    cascade: true,
+    eager: true,
+  })
+  @JoinColumn()
+  metaOptions?: MetaOption;
 
-  metaOptions?: CreatePostMetaOptionsDto[];
+  tags?: string[];
 }

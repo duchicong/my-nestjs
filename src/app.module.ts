@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/user.entity';
 import { TagsModule } from './tags/tags.module';
+import { MetaOptionsModule } from './meta-options/meta-options.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { TagsModule } from './tags/tags.module';
         type: 'postgres',
         entities: [User],
         synchronize: true,
+        autoLoadEntities: true,
         host: '0.0.0.0',
         port: 5454,
         database: 'postpres-db',
@@ -28,6 +30,7 @@ import { TagsModule } from './tags/tags.module';
       }),
     }),
     TagsModule,
+    MetaOptionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
