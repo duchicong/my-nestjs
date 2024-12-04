@@ -28,10 +28,13 @@ export class PostsService {
     private readonly metaOptionRepository: Repository<MetaOption>,
   ) {}
 
-  public async findAll(userId: string) {
-    console.log(userId);
-    return this.postRepository.find({
-      relations: { metaOptions: true },
+  public async findAll(userId: number) {
+    const author = await this.userService.findOneById(userId);
+    return await this.postRepository.find({
+      relations: { metaOptions: true, author: true },
+      where: {
+        author,
+      },
     });
   }
 
@@ -42,8 +45,12 @@ export class PostsService {
     //   newMetaOption = this.metaOptionRepository.create(
     //     createPostDto.metaOptions,
     //   );
+    const author = await this.userService.findOneById(createPostDto.authorId);
 
-    const newPost = this.postRepository.create(createPostDto);
+    const newPost = this.postRepository.create({
+      ...createPostDto,
+      author,
+    });
 
     // if (newPost) {
     //   if (newMetaOption) {
@@ -56,15 +63,7 @@ export class PostsService {
   }
 
   public async delete(id: number) {
-    const post = await this.postRepository.findOneBy({ id });
-    const inversePost = await this.metaOptionRepository.find({
-      where: { id: post.metaOptions.id },
-      relations: { post: true },
-    });
-
-    await this.postRepository.delete(post.id);
-    // await this.metaOptionRepository.delete(inversePost.id);
-
+    await this.postRepository.delete(id);
     return {
       deleted: true,
       id,

@@ -4,6 +4,7 @@ import {
   IsISO8601,
   IsJSON,
   IsNotEmpty,
+  IsInt,
   IsOptional,
   IsString,
   IsUrl,
@@ -114,4 +115,12 @@ export class CreatePostDto {
   @IsOptional()
   @Type(() => CreatePostMetaOptionsDto)
   metaOptions?: CreatePostMetaOptionsDto | null;
+
+  @ApiProperty({
+    type: 'integer',
+    description: 'Author Id',
+  })
+  @IsNotEmpty()
+  @IsInt()
+  authorId: number;
 }

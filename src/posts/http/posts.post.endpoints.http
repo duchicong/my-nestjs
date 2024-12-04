@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
   "title": "the post",
-  "slug": "the-post-2",
+  "slug": "the-post-1",
   "postType": "post",
   "status": "draft",
   "content": "this is content of the post",
@@ -13,5 +13,6 @@ Content-Type: application/json
   // "tags": ["post1"],
   "metaOptions": {
     "metaValue": "{\"sidebarEnabled\":true, \"footerActice\":true}"
-  }
+  },
+  "authorId": 2
 }

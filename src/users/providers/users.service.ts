@@ -43,12 +43,16 @@ export class UsersService {
   /**
    * Find a single user using the Id of the user
    */
-  public findOneById(id: string) {
-    return {
-      id,
-      firstName: 'cong',
-      email: 'ducong@gmail.com',
-    };
+  public async findOneById(id: number) {
+    try {
+      const user = await this.usersRepository.findOneBy({ id });
+
+      if (!user) throw new Error('User is not exist!');
+
+      return user;
+    } catch (err) {
+      return err;
+    }
   }
 
   public async createUser(createUserDto: CreateUserDto) {
